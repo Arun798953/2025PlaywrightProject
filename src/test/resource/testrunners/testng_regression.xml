@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name= "Open Cart Test Regression PW suite"  thread-count="5" parallel="tests" verbose="4">
+<listeners>
+<listener class-name="com.qa.opencart.listeners.ExtentReportListener"/>
+</listeners>
+
+<test name="Open Cart Login Page Test">
+<classes>
+<class name="com.qa.opencart.tests.LoginPageTest"/>
+</classes>
+</test>
+
+<test name="Open Cart Home Page Test">
+<classes>
+<class name="com.qa.opencart.tests.HomePageTest"/>
+</classes>
+</test>
+
+
+</suite>
