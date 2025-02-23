@@ -6,13 +6,16 @@
 <listener class-name="com.qa.opencart.listeners.ExtentReportListener"/>
 </listeners>
 
-<test name="Open Cart Login Page Test">
+<test name="Open Cart Login Page Test-chrome">
+<parameter name="browser" value="chrome"></parameter>
 <classes>
 <class name="com.qa.opencart.tests.LoginPageTest"/>
 </classes>
 </test>
 
-<test name="Open Cart Home Page Test">
+<test name="Open Cart Home Page Test_chromium">
+<parameter name="browser" value="chromium"></parameter>
+
 <classes>
 <class name="com.qa.opencart.tests.HomePageTest"/>
 </classes>
