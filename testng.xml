@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
-<suite name="Open Cart Test Regression PW suite" thread-count="2" parallel="tests" verbose="4">
+<suite name="Open Cart Test Regression PW suite" thread-count="2"
+	parallel="tests" verbose="4">
 	<test name="Open Cart Home Page Test_chrome">
 		<parameter name="browser" value="chrome"></parameter>
 		<classes>
@@ -9,12 +10,23 @@
 		</classes>
 	</test>
 
-	<test name="Open Cart Login Page Test_firefox">
-		<parameter name="browser" value="chrome"></parameter>
+	<!--<test name="Open Cart Login Page Test_chromium">
+		<parameter name="browser" value="chromium"></parameter>
+
+		<classes>
+			<class name="com.qa.opencart.tests.LoginPageTest"/>
+		</classes>
+	</test>-->
+	
+		<test
+		name="Open Cart Login Page Test_firefox">
+		<parameter name="browser" value="firefox"></parameter>
 
 		<classes>
 			<class name="com.qa.opencart.tests.LoginPageTest" />
 		</classes>
 	</test>
+	-->
+
 
 </suite>
