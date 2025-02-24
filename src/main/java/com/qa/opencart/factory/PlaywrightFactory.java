@@ -10,6 +10,7 @@ import java.util.Properties;
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserContext;
 import com.microsoft.playwright.BrowserType;
+import com.microsoft.playwright.BrowserType.LaunchOptions;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 
@@ -19,10 +20,10 @@ public class PlaywrightFactory {
 	BrowserContext browsercontext;
 	Page page;
 	Properties prop;
-	private static ThreadLocal<Playwright>tlplaywright = new ThreadLocal<>();
-    private static ThreadLocal<Browser>tlbrowser = new ThreadLocal<>();
-	private static ThreadLocal<BrowserContext>tlbrowsercontext = new ThreadLocal<>();
-	private static ThreadLocal<Page>tlpage = new ThreadLocal<>();
+	private static ThreadLocal<Playwright> tlplaywright = new ThreadLocal<>();
+	private static ThreadLocal<Browser> tlbrowser = new ThreadLocal<>();
+	private static ThreadLocal<BrowserContext> tlbrowsercontext = new ThreadLocal<>();
+	private static ThreadLocal<Page> tlpage = new ThreadLocal<>();
 
 	public static Playwright getPlaywright() {
 		return tlplaywright.get();
@@ -44,7 +45,7 @@ public class PlaywrightFactory {
 		String browserName = prop.getProperty("browser").trim();
 		System.out.println("Browser name is: " + browserName);
 
-		//playwright = Playwright.create();
+		// playwright = Playwright.create();
 		tlplaywright.set(Playwright.create());
 
 		switch (browserName.toLowerCase()) {
@@ -61,18 +62,20 @@ public class PlaywrightFactory {
 			break;
 
 		case "chrome":
-			tlbrowser.set(getPlaywright().chromium().launch(new BrowserType.LaunchOptions().setChannel("chrome").setHeadless(false)));
+			tlbrowser.set(getPlaywright().chromium().launch(new LaunchOptions().setChannel("chrome").setHeadless(false)));
 			break;
 
+		case "edge":
+			tlbrowser.set(getPlaywright().chromium().launch(new LaunchOptions().setChannel("msedge").setHeadless(false)));
+			break;
 		default:
 			System.out.println("Please pass the right browser: " + browserName);
 			break;
 		}
-        
+
 		tlbrowsercontext.set(getBrowser().newContext());
 		tlpage.set(getBrowserContext().newPage());
 		getPage().navigate(prop.getProperty("url").trim());
-	
 
 		return getPage();
 	}
@@ -83,10 +86,10 @@ public class PlaywrightFactory {
 	 * @return
 	 * @throws IOException
 	 */
-	public Properties initProp()  {
+	public Properties initProp() {
 		try {
 			FileInputStream fip = new FileInputStream("./src/test/resource/config/config.properties");
-			prop=new Properties();
+			prop = new Properties();
 			try {
 				prop.load(fip);
 			} catch (IOException e) {
@@ -100,23 +103,16 @@ public class PlaywrightFactory {
 
 		return prop;
 
-		
 	}
-	
+
 	public static String takeScreenshot() {
 		String path = System.getProperty("user.dir") + "/screenshot/" + System.currentTimeMillis() + ".png";
 		getPage().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(path)).setFullPage(true));
-		
+
 //		byte[] buffer = getPage().screenshot(new Page.ScreenshotOptions().setPath(Paths.get(path)).setFullPage(true));
 //		String base64Path = Base64.getEncoder().encodeToString(buffer);
-		
+
 		return path;
 	}
-
-
-
-
-	
-	
 
 }
