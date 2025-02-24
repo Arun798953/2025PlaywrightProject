@@ -1,7 +1,5 @@
 package com.qa.opencart.pages;
 
-import java.util.Properties;
-
 import com.microsoft.playwright.Page;
 
 public class LoginPage {
@@ -9,9 +7,9 @@ public class LoginPage {
 	
 	private String emailid="//input[@id='input-email']";
 	private String password="//input[@id='input-password']";
-	private String loginbtn="//input[@value='Login']";
-	private String forgotpaswordlink="(//a[normalize-space()='Forgotten Password'][1])";
-	private String logoutlink="//a[@class='list-group-item'][normalize-space()='Logout']";
+	private String loginbtn="input[value='Login']";
+	private String forgotpaswordlink="//div[@class='form-group']//a[normalize-space()='Forgotten Password']";
+	private String logoutLink = "//a[@class='list-group-item'][normalize-space()='Logout']";
 	
 	public LoginPage(Page page) {
 		this.page=page;
@@ -28,11 +26,12 @@ public class LoginPage {
 	}
 	
 	public boolean doLogin(String appusername,String apppassword) {
-		System.out.println("App credentials: "+appusername +" : "+apppassword);
+		System.out.println("App credentials: "+appusername +":"+apppassword);
 		page.fill(emailid, appusername);
 		page.fill(password, apppassword);
 		page.click(loginbtn);
-		if(page.isVisible(logoutlink)){
+		page.locator(logoutLink).waitFor();
+		if(page.locator(logoutLink).isVisible()){
 			System.out.println("user is successfully logged in");
 			return true;
 		}

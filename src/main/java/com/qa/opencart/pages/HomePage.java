@@ -8,7 +8,7 @@ public class HomePage {
 	private String search = "input[name='search']";
 	private String searchicon = "div#search button";
 	private String ProductHeader="div#content h1";
-	private String loginlink="//a[text()='Login']";
+	private String loginlink="//a[normalize-space()='Login']";
 	private String myAccount="//span[normalize-space()='My Account']";
 
 	public HomePage(Page page) {
@@ -37,7 +37,7 @@ public class HomePage {
 	
 	public LoginPage navigatetoLoginPage() {
 		page.click(myAccount);
-        page.click(loginlink);
+		page.click(loginlink);
 		return new LoginPage(page);
 		
 	}

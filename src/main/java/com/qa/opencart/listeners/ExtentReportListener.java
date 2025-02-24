@@ -15,12 +15,11 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
-import com.shopee.driverfactory.DriverFactory;
+import com.qa.opencart.factory.PlaywrightFactory;
 
+public class ExtentReportListener implements ITestListener {
 
-public class ExtentReportListener implements ITestListener{
-
-	private static final String OUTPUT_FOLDER = "./reports/";
+	private static final String OUTPUT_FOLDER = "./build/";
 	private static final String FILE_NAME = "TestExecutionReport.html";
 
 	private static ExtentReports extent = init();
@@ -48,7 +47,7 @@ public class ExtentReportListener implements ITestListener{
 		extentReports.setSystemInfo("System", "MAC");
 		extentReports.setSystemInfo("Author", "Naveen AutomationLabs");
 		extentReports.setSystemInfo("Build#", "1.1");
-		extentReports.setSystemInfo("Team", "OpenCart QA Team");
+		extentReports.setSystemInfo("Team", "OMS");
 		extentReports.setSystemInfo("Customer Name", "NAL");
 
 		//extentReports.setSystemInfo("ENV NAME", System.getProperty("env"));
@@ -94,22 +93,19 @@ public class ExtentReportListener implements ITestListener{
 	public synchronized void onTestSuccess(ITestResult result) {
 		System.out.println((result.getMethod().getMethodName() + " passed!"));
 		test.get().pass("Test passed");
-		//test.get().pass(result.getThrowable(), MediaEntityBuilder.createScreenCaptureFromPath(getScreenshot()).build());
+		test.get().pass(result.getThrowable(), MediaEntityBuilder.createScreenCaptureFromBase64String(PlaywrightFactory.takeScreenshot(),result.getMethod().getMethodName()).build());
 		test.get().getModel().setEndTime(getTime(result.getEndMillis()));
 	}
 
 	public synchronized void onTestFailure(ITestResult result) {
 		System.out.println((result.getMethod().getMethodName() + " failed!"));
-		String methodName = result.getMethod().getMethodName();
-
-		test.get().fail(result.getThrowable(), MediaEntityBuilder.createScreenCaptureFromPath(DriverFactory.getScreenshot()).build());
+		test.get().fail(result.getThrowable(), MediaEntityBuilder.createScreenCaptureFromBase64String(PlaywrightFactory.takeScreenshot(),result.getMethod().getMethodName()).build());
 		test.get().getModel().setEndTime(getTime(result.getEndMillis()));
 	}
 
 	public synchronized void onTestSkipped(ITestResult result) {
 		System.out.println((result.getMethod().getMethodName() + " skipped!"));
-		String methodName = result.getMethod().getMethodName();
-		test.get().skip(result.getThrowable(), MediaEntityBuilder.createScreenCaptureFromPath(DriverFactory.getScreenshot()).build());
+		test.get().skip(result.getThrowable(), MediaEntityBuilder.createScreenCaptureFromBase64String(PlaywrightFactory.takeScreenshot(), result.getMethod().getMethodName()).build());
 		test.get().getModel().setEndTime(getTime(result.getEndMillis()));
 	}
 

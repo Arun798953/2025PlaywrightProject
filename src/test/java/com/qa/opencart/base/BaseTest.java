@@ -5,6 +5,8 @@ import java.util.Properties;
 
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 
 import com.microsoft.playwright.Page;
 import com.qa.opencart.factory.PlaywrightFactory;
@@ -13,24 +15,33 @@ import com.qa.opencart.pages.LoginPage;
 
 public class BaseTest {
 	PlaywrightFactory pf;
-	Page page;
+     Page page;
 	protected Properties prop;
 	
 	protected HomePage homepage;
 	protected LoginPage loginpage;
 
 	
-	@BeforeTest()
-		public void setup() throws IOException {
-			pf=new PlaywrightFactory();
-			prop=pf.initProp();
-			page=pf.initBrowser(prop);
-			homepage=new HomePage(page);
-	}
+	@Parameters({"browser"})
+	@BeforeTest
+	public void setup(@Optional String browserName) throws IOException {
+		pf = new PlaywrightFactory();
 
-	@AfterTest()
+		prop = pf.initProp();
+
+		if (browserName != null) {
+			prop.setProperty("browser", browserName);
+		}
+
+		page = pf.initBrowser(prop);
+		 homepage=new HomePage(page); 
+
+
+	}
+	
+	@AfterTest
 	public void teardown() {
-	//page.context().browser().close();
+	page.context().browser().close();
 		
 	}
 
